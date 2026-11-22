@@ -861,77 +861,10 @@
   const btnQrModal = document.getElementById('btn-qr-modal');
   const qrModal = document.getElementById('qr-modal');
   const btnCloseQr = document.getElementById('btn-close-qr');
-  const qrCanvas = document.getElementById('qr-code-canvas');
-
-  function drawStylizedMuseumQr() {
-    if (!qrCanvas) return;
-    const ctx = qrCanvas.getContext('2d');
-    const size = qrCanvas.width;
-    const cells = 21;
-    const cellSize = Math.floor((size - 16) / cells);
-    const offset = Math.floor((size - cells * cellSize) / 2);
-
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, size, size);
-
-    // Sinh ma trận biểu trưng QR có 3 góc định vị chuẩn + ấn Vạn Xuân ở tâm
-    function isFinder(r, c) {
-      return (r < 7 && c < 7) || (r < 7 && c >= cells - 7) || (r >= cells - 7 && c < 7);
-    }
-
-    function drawFinder(startR, startC) {
-      for (let r = 0; r < 7; r++) {
-        for (let c = 0; c < 7; c++) {
-          const isBorder = r === 0 || r === 6 || c === 0 || c === 6;
-          const isInner = r >= 2 && r <= 4 && c >= 2 && c <= 4;
-          if (isBorder || isInner) {
-            ctx.fillStyle = '#7A0000';
-            ctx.fillRect(
-              offset + (startC + c) * cellSize,
-              offset + (startR + r) * cellSize,
-              cellSize,
-              cellSize
-            );
-          }
-        }
-      }
-    }
-
-    drawFinder(0, 0);
-    drawFinder(0, cells - 7);
-    drawFinder(cells - 7, 0);
-
-    // Các điểm dữ liệu
-    let seed = 544;
-    for (let r = 0; r < cells; r++) {
-      for (let c = 0; c < cells; c++) {
-        if (isFinder(r, c)) continue;
-        if (r >= 8 && r <= 12 && c >= 8 && c <= 12) continue;
-        seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-        if (seed % 10 < 5) {
-          ctx.fillStyle = '#26140C';
-          ctx.fillRect(offset + c * cellSize, offset + r * cellSize, cellSize - 1, cellSize - 1);
-        }
-      }
-    }
-
-    // Ấn trung tâm544
-    const center = size / 2;
-    ctx.fillStyle = '#7A0000';
-    ctx.fillRect(center - 22, center - 22, 44, 44);
-    ctx.strokeStyle = '#D4AF37';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(center - 20, center - 20, 40, 40);
-    ctx.fillStyle = '#FFE89E';
-    ctx.textAlign = 'center';
-    ctx.font = 'bold 14px "Playfair Display", serif';
-    ctx.fillText('544', center, center + 5);
-  }
 
   if (btnQrModal && qrModal) {
     btnQrModal.addEventListener('click', () => {
       playTone('click');
-      drawStylizedMuseumQr();
       qrModal.removeAttribute('hidden');
     });
   }

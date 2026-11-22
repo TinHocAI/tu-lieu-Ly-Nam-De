@@ -937,21 +937,29 @@
           </ul>
         </div>
 
-        <!-- Cột 2: Thông tin Đội thi & Bản quyền -->
+        <!-- Cột 2: Thông tin Đội thi & Mã QR Bảo tàng số -->
         <div class="footer-col footer-about-col">
           <h3 class="footer-heading">🏛️ VỀ BẢO TÀNG SỐ THU NHỎ</h3>
           <div class="footer-project-card">
-            <p class="footer-theme-quote">
-              “Tự hào bản sắc – Kết nối di sản – Lan tỏa giá trị văn hóa quê hương”
-            </p>
-            <p class="footer-team-info">
-              Sản phẩm dự thi Cuộc thi tìm hiểu văn hóa dân tộc và di sản địa phương năm 2026.
-            </p>
-            <div class="footer-classes-tags">
-              <span>Chi đoàn 12A3</span>
-              <span>Chi đoàn 11A3</span>
-              <span>Chi đoàn 10A3</span>
-              <span>Chi đoàn 11A5</span>
+            <div class="footer-project-flex">
+              <div class="footer-project-info">
+                <p class="footer-theme-quote">
+                  “Tự hào bản sắc – Kết nối di sản – Lan tỏa giá trị văn hóa quê hương”
+                </p>
+                <p class="footer-team-info">
+                  Sản phẩm dự thi Cuộc thi tìm hiểu văn hóa dân tộc và di sản địa phương năm 2026.
+                </p>
+                <div class="footer-classes-tags">
+                  <span>Chi đoàn 12A3</span>
+                  <span>Chi đoàn 11A3</span>
+                  <span>Chi đoàn 10A3</span>
+                  <span>Chi đoàn 11A5</span>
+                </div>
+              </div>
+              <div class="footer-qr-box">
+                <img src="qr-code.png" alt="Mã QR Bảo tàng số Hào khí Vạn Xuân" class="footer-qr-img" />
+                <span class="footer-qr-caption">Quét mã QR</span>
+              </div>
             </div>
           </div>
         </div>
@@ -976,7 +984,12 @@
         Dùng camera điện thoại hoặc Zalo để quét mã QR truy cập không gian Bảo tàng số Hoàng đế Lý Nam Đế &amp; Di tích Đền Mục.
       </p>
       <div class="qr-visual-frame">
-        <canvas id="qr-code-canvas" width="220" height="220"></canvas>
+        <img src="qr-code.png" alt="Mã QR Bảo tàng số Hào khí Vạn Xuân" id="qr-code-img" class="qr-code-img" width="220" height="220" />
+      </div>
+      <div class="qr-modal-actions">
+        <a href="qr-code.png" download="Ma-QR-Bao-Tang-So-Van-Xuan.png" class="btn-download-qr">
+          ⬇ Tải ảnh Mã QR (.PNG)
+        </a>
       </div>
       <div class="modal-team-tag">
         Đội 3 (12A3, 11A3, 10A3, 11A5) – Trường THPT Bộc Bố
