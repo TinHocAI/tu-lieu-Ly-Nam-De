@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#7A0000" />
+  <meta name="description" content="Bảo tàng số thu nhỏ: Khám phá Hào khí Vạn Xuân – Hoàng đế Lý Nam Đế & Di tích Đền Mục. Sản phẩm số của Đội 3 (12A3, 11A3, 10A3, 11A5) – Trường THPT Bộc Bố." />
+  <title>Khám Phá Hào Khí Vạn Xuân – Hoàng Đế Lý Nam Đế & Di Tích Đền Mục</title>
+
+  <!-- Google Fonts: Playfair Display & Be Vietnam Pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Canvas hiệu ứng pháo hoa (Confetti) khi hoàn thành Minigame -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- STICKY NAVIGATION BAR -->
+  <header class="sticky-header" id="top-nav">
+    <div class="header-top-bar">
+      <a href="#hero" class="brand-logo" aria-label="Về đầu trang Bảo tàng số Vạn Xuân">
+        <span class="seal-icon" aria-hidden="true">印</span>
+        <div class="brand-text">
+          <span class="brand-title">BẢO TÀNG SỐ VẠN XUÂN</span>
+          <span class="brand-sub">Đội 3 • THPT Bộc Bố</span>
+        </div>
+      </a>
+      <div class="header-actions">
+        <button type="button" id="btn-audio-toggle" class="icon-btn" aria-label="Bật/Tắt âm thanh hiệu ứng" title="Bật/Tắt âm thanh trống đồng">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+            <path id="audio-waves" d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+        </button>
+        <button type="button" id="btn-qr-modal" class="icon-btn qr-trigger-btn" aria-label="Hiển thị mã QR chia sẻ" title="Mã QR Bảo tàng số">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+            <path d="M14 14h3v3h-3zM18 14h3v3h-3zM14 18h3v3h-3zM18 18h3v3h-3z"></path>
+          </svg>
+          <span class="qr-btn-label">Mã QR</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Thanh điều hướng nhanh 4 mục chuẩn Mobile-First -->
+    <nav class="quick-nav" aria-label="Điều hướng chính">
+      <a href="#tieu-su" class="nav-link active" data-nav="tieu-su">
+        <span class="nav-dot"></span>Tiểu sử
+      </a>
+      <a href="#dong-thoi-gian" class="nav-link" data-nav="dong-thoi-gian">
+        <span class="nav-dot"></span>Dòng thời gian
+      </a>
+      <a href="#tu-lieu" class="nav-link" data-nav="tu-lieu">
+        <span class="nav-dot"></span>Tư liệu
+      </a>
+      <a href="#minigame" class="nav-link" data-nav="minigame">
+        <span class="nav-dot"></span>Minigame
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ==========================================
+         PHẦN 1: HERO BANNER
+         ========================================== -->
+    <section id="hero" class="hero-section">
+      <!-- Họa tiết trống đồng Đông Sơn xoay nhẹ phía sau -->
+      <div class="hero-bg-drum" aria-hidden="true">
+        <svg viewBox="0 0 400 400" class="drum-svg">
+          <circle cx="200" cy="200" r="190" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.35" />
+          <circle cx="200" cy="200" r="165" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.25" />
+          <circle cx="200" cy="200" r="135" fill="none" stroke="#D4AF37" stroke-width="2" stroke-dasharray="2 8" opacity="0.4" />
+          <circle cx="200" cy="200" r="105" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.3" />
+          <circle cx="200" cy="200" r="70" fill="none" stroke="#D4AF37" stroke-width="1.5" opacity="0.35" />
+          <!-- Ngôi sao 12 cánh trung tâm mặt trống -->
+          <polygon points="200,140 208,180 242,158 218,192 260,200 218,208 242,242 208,220 200,260 192,220 158,242 182,208 140,200 182,192 158,158 192,180" fill="#D4AF37" opacity="0.22" />
+          <circle cx="200" cy="200" r="16" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.4" />
+        </svg>
+      </div>
+
+      <div class="container hero-content">
+        <!-- Huy hiệu Đội 3 - THPT Bộc Bố -->
+        <div class="team-badge">
+          <span class="badge-star" aria-hidden="true">★</span>
+          <span>Sản phẩm số của Đội 3 (12A3, 11A3, 10A3, 11A5) – Trường THPT Bộc Bố</span>
+        </div>
+
+        <div class="hero-era-pill">
+          <span>BẢO TÀNG SỐ THU NHỎ • KỶ NGUYÊN VẠN XUÂN (544)</span>
+        </div>
+
+        <h1 class="hero-title">
+          HÀO KHÍ VẠN XUÂN – <span class="hero-title-highlight">LÝ NAM ĐẾ</span>
+        </h1>
+
+        <div class="ornament-divider" aria-hidden="true">
+          <span class="line"></span>
+          <span class="diamond">❖</span>
+          <span class="line"></span>
+        </div>
+
+        <p class="hero-subtitle">
+          Vị Hoàng đế đầu tiên của dân tộc – Niềm tự hào đất Thái Nguyên
+        </p>
+
+        <!-- Thông số lịch sử tóm lược -->
+        <div class="hero-highlights">
+          <div class="highlight-item">
+            <span class="highlight-num">503 – 548</span>
+            <span class="highlight-label">Năm sinh – Năm mất</span>
+          </div>
+          <div class="highlight-sep" aria-hidden="true"></div>
+          <div class="highlight-item">
+            <span class="highlight-num">Năm 544</span>
+            <span class="highlight-label">Dựng nước Vạn Xuân</span>
+          </div>
+          <div class="highlight-sep" aria-hidden="true"></div>
+          <div class="highlight-item">
+            <span class="highlight-num">Thiên Đức</span>
+            <span class="highlight-label">Niên hiệu độc lập</span>
+          </div>
+        </div>
+
+        <div class="hero-cta-group">
+          <a href="#tu-lieu" class="btn-primary-gold" id="btn-explore-now">
+            <span>Khám phá ngay</span>
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 5v14M19 12l-7 7-7-7" />
+            </svg>
+          </a>
+          <a href="#minigame" class="btn-secondary-outline">
+            <span>Thử sức Minigame & Nhận Thẻ</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Đường viền cổ điển ngăn cách -->
+      <div class="traditional-border-bottom" aria-hidden="true"></div>
+    </section>
+
+    <!-- ==========================================
+         PHẦN 2: KHO TƯ LIỆU LỊCH SỬ TOÀN TẬP (4 TABS)
+         ========================================== -->
+    <section id="tu-lieu" class="section-block archive-section">
+      <!-- Điểm neo ẩn cho nút "Tiểu sử" trên thanh điều hướng -->
+      <div id="tieu-su" class="scroll-anchor" aria-hidden="true"></div>
+
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker">PHẦN I • TƯ LIỆU BẢO TÀNG</span>
+          <h2 class="section-title">KHO TƯ LIỆU LỊCH SỬ TOÀN TẬP</h2>
+          <div class="section-ornament" aria-hidden="true">
+            <span></span><i>✦</i><span></span>
+          </div>
+          <p class="section-desc">
+            Chạm vào từng mục bên dưới để khám phá thân thế Hoàng đế Lý Nam Đế, các bậc khai quốc công thần, bút tích chính sử và Di tích Quốc gia Đền Mục.
+          </p>
+        </div>
+
+        <!-- Hệ thống 4 Tab chuyển đổi mượt mà chuẩn Mobile -->
+        <div class="tabs-wrapper">
+          <div class="tabs-nav" role="tablist" aria-label="Kho tư liệu lịch sử">
+            <button
+              type="button"
+              class="tab-btn active"
+              role="tab"
+              aria-selected="true"
+              aria-controls="panel-tieusu"
+              id="tab-btn-tieusu"
+              data-tab="panel-tieusu"
+            >
+              <span class="tab-num">01</span>
+              <span class="tab-label">Tiểu sử &amp; Thân thế</span>
+            </button>
+
+            <button
+              type="button"
+              class="tab-btn"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-congthan"
+              id="tab-btn-congthan"
+              data-tab="panel-congthan"
+            >
+              <span class="tab-num">02</span>
+              <span class="tab-label">Công thần phò tá</span>
+            </button>
+
+            <button
+              type="button"
+              class="tab-btn"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-chinhsu"
+              id="tab-btn-chinhsu"
+              data-tab="panel-chinhsu"
+            >
+              <span class="tab-num">03</span>
+              <span class="tab-label">Chính sử &amp; Ý nghĩa</span>
+            </button>
+
+            <button
+              type="button"
+              class="tab-btn"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-denmuc"
+              id="tab-btn-denmuc"
+              data-tab="panel-denmuc"
+            >
+              <span class="tab-num">04</span>
+              <span class="tab-label">Di tích Đền Mục</span>
+            </button>
+          </div>
+
+          <!-- NỘI DUNG CÁC TAB -->
+          <div class="tabs-content-container">
+
+            <!-- TAB 1: TIỂU SỬ & THÂN THẾ -->
+            <article
+              id="panel-tieusu"
+              class="tab-panel active"
+              role="tabpanel"
+              aria-labelledby="tab-btn-tieusu"
+            >
+              <div class="bio-card">
+                <div class="bio-visual-header">
+                  <!-- Minh họa Ấn Chương & Chân dung biểu tượng Hoàng Đế -->
+                  <div class="emperor-emblem-box">
+                    <svg viewBox="0 0 180 180" class="emperor-svg" role="img" aria-label="Biểu tượng Hoàng đế Lý Nam Đế">
+                      <defs>
+                        <radialGradient id="goldGlow" cx="50%" cy="50%" r="50%">
+                          <stop offset="0%" stop-color="#FFF3C4" />
+                          <stop offset="65%" stop-color="#D4AF37" />
+                          <stop offset="100%" stop-color="#8A6311" />
+                        </radialGradient>
+                      </defs>
+                      <circle cx="90" cy="90" r="82" fill="#580000" stroke="url(#goldGlow)" stroke-width="4" />
+                      <circle cx="90" cy="90" r="72" fill="none" stroke="#D4AF37" stroke-width="1.2" stroke-dasharray="4 3" />
+                      <!-- Mũ bình thiên Hoàng đế -->
+                      <path d="M55 62 L125 62 L120 75 L60 75 Z" fill="url(#goldGlow)" />
+                      <rect x="42" y="57" width="96" height="5" rx="2.5" fill="url(#goldGlow)" />
+                      <!-- Tua ngọc mũ miện -->
+                      <line x1="50" y1="62" x2="50" y2="78" stroke="#FFF3C4" stroke-width="1.8" stroke-dasharray="2 2" />
+                      <line x1="65" y1="62" x2="65" y2="78" stroke="#FFF3C4" stroke-width="1.8" stroke-dasharray="2 2" />
+                      <line x1="115" y1="62" x2="115" y2="78" stroke="#FFF3C4" stroke-width="1.8" stroke-dasharray="2 2" />
+                      <line x1="130" y1="62" x2="130" y2="78" stroke="#FFF3C4" stroke-width="1.8" stroke-dasharray="2 2" />
+                      <!-- Bảo kiếm & Cuộn chiếu chỉ (Văn Võ Song Toàn) -->
+                      <path d="M90 78 L94 132 L90 142 L86 132 Z" fill="url(#goldGlow)" />
+                      <rect x="74" y="88" width="32" height="5" rx="2" fill="#FFF3C4" />
+                      <!-- Dòng chữ triện Vạn Xuân -->
+                      <text x="90" y="45" text-anchor="middle" fill="#FFF3C4" font-family="Playfair Display, serif" font-size="13" font-weight="700" letter-spacing="2">VẠN XUÂN</text>
+                      <text x="90" y="160" text-anchor="middle" fill="#D4AF37" font-family="Be Vietnam Pro, sans-serif" font-size="11" font-weight="700" letter-spacing="1.5">503 – 548</text>
+                    </svg>
+                  </div>
+
+                  <div class="bio-title-block">
+                    <span class="imperial-tag">KHAI QUỐC HOÀNG ĐẾ</span>
+                    <h3 class="bio-name">Hoàng Đế Lý Nam Đế</h3>
+                    <p class="bio-alias">Danh xưng lịch sử: <strong>Nam Việt Đế</strong> • Niên hiệu: <strong>Thiên Đức</strong></p>
+                  </div>
+                </div>
+
+                <!-- 3 Thông tin cốt lõi theo chuẩn đề bài -->
+                <div class="bio-info-list">
+                  <div class="bio-info-item">
+                    <div class="bio-info-icon" aria-hidden="true">✦</div>
+                    <div class="bio-info-body">
+                      <span class="bio-info-label">Tên thật &amp; Năm sinh – Năm mất</span>
+                      <p class="bio-info-text">
+                        <strong>Lý Bí</strong> (còn gọi là <strong>Lý Bôn</strong>), sinh năm <strong>503</strong>, mất năm <strong>548</strong>.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="bio-info-item">
+                    <div class="bio-info-icon" aria-hidden="true">❖</div>
+                    <div class="bio-info-body">
+                      <span class="bio-info-label">Quê quán</span>
+                      <p class="bio-info-text">
+                        <strong>Thái Bình</strong> (nay thuộc <strong>phường Tiên Phong, TP. Phổ Yên, tỉnh Thái Nguyên</strong>).
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="bio-info-item">
+                    <div class="bio-info-icon" aria-hidden="true">⚔</div>
+                    <div class="bio-info-body">
+                      <span class="bio-info-label">Xuất thân &amp; Chí lớn khởi nghĩa</span>
+                      <p class="bio-info-text">
+                        Sinh ra trong gia đình hào trưởng, <strong>văn võ song toàn</strong>, từng giữ chức <strong>Giám quân ở Đức Châu</strong>. Vì bất bình trước ách đô hộ tham tàn của Thứ sử nhà Lương (<strong>Tiêu Tư</strong>), ông từ quan về quê chiêu mộ hào kiệt khởi nghĩa.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Các dấu ấn triều đại Vạn Xuân -->
+                <div class="dynasty-chips-grid">
+                  <div class="dynasty-chip">
+                    <span class="chip-key">Quốc hiệu</span>
+                    <span class="chip-val">Vạn Xuân (544)</span>
+                  </div>
+                  <div class="dynasty-chip">
+                    <span class="chip-key">Niên hiệu</span>
+                    <span class="chip-val">Thiên Đức</span>
+                  </div>
+                  <div class="dynasty-chip">
+                    <span class="chip-key">Chính điện</span>
+                    <span class="chip-val">Điện Vạn Thọ</span>
+                  </div>
+                  <div class="dynasty-chip">
+                    <span class="chip-key">Di sản văn hóa</span>
+                    <span class="chip-val">Chùa Khai Quốc</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- TAB 2: CÁC BẬC CÔNG THẦN PHÒ TÁ -->
+            <article
+              id="panel-congthan"
+              class="tab-panel"
+              role="tabpanel"
+              aria-labelledby="tab-btn-congthan"
+              hidden
+            >
+              <div class="panel-intro-bar">
+                <p>Bốn bậc danh thần trụ cột sát cánh cùng Lý Nam Đế dựng nên cơ nghiệp nhà Tiền Lý và bảo vệ nền độc lập nước Vạn Xuân:</p>
+              </div>
+
+              <div class="heroes-grid">
+                <!-- Thẻ 1: Tinh Thiều -->
+                <div class="hero-card">
+                  <div class="hero-card-top">
+                    <div class="hero-role-icon" aria-hidden="true">📜</div>
+                    <span class="hero-branch-badge branch-van">Đứng đầu Ban Văn</span>
+                  </div>
+                  <h3 class="hero-card-name">Tinh Thiều</h3>
+                  <p class="hero-card-desc">
+                    Bậc hiền tài văn võ song toàn, đứng đầu ban văn, mưu sĩ đắc lực.
+                  </p>
+                  <div class="hero-card-extra">
+                    <span><strong>Dấu ấn:</strong> Người giỏi từ chương, khước từ quan chức nhà Lương để về phò tá Lý Bí hoạch định đại cuộc và xây dựng triều nghi Vạn Xuân.</span>
+                  </div>
+                </div>
+
+                <!-- Thẻ 2: Phạm Tu -->
+                <div class="hero-card">
+                  <div class="hero-card-top">
+                    <div class="hero-role-icon" aria-hidden="true">⚔️</div>
+                    <span class="hero-branch-badge branch-vo">Đứng đầu Ban Võ</span>
+                  </div>
+                  <h3 class="hero-card-name">Phạm Tu</h3>
+                  <p class="hero-card-desc">
+                    Lão tướng dũng mãnh, uy nghiêm, đứng đầu ban võ.
+                  </p>
+                  <div class="hero-card-extra">
+                    <span><strong>Dấu ấn:</strong> Thống lĩnh quân đội đánh đuổi Thứ sử Tiêu Tư, lập chiến công hiển hách đập tan quân Lương và chiến đấu anh dũng bảo vệ kinh thành.</span>
+                  </div>
+                </div>
+
+                <!-- Thẻ 3: Triệu Túc -->
+                <div class="hero-card">
+                  <div class="hero-card-top">
+                    <div class="hero-role-icon" aria-hidden="true">🥁</div>
+                    <span class="hero-branch-badge branch-tienphong">Khai quốc Công thần</span>
+                  </div>
+                  <h3 class="hero-card-name">Triệu Túc</h3>
+                  <p class="hero-card-desc">
+                    Hào trưởng đất Chu Diên, nhiệt huyết, đi đầu hưởng ứng khởi nghĩa.
+                  </p>
+                  <div class="hero-card-extra">
+                    <span><strong>Dấu ấn:</strong> Thủ lĩnh uy tín lớn vùng Chu Diên, ngay khi Lý Bí phất cờ đã đem toàn bộ lực lượng nghĩa binh gia nhập, tạo thế liên minh vững chắc.</span>
+                  </div>
+                </div>
+
+                <!-- Thẻ 4: Triệu Quang Phục -->
+                <div class="hero-card">
+                  <div class="hero-card-top">
+                    <div class="hero-role-icon" aria-hidden="true">🛡️</div>
+                    <span class="hero-branch-badge branch-kenghiep">Triệu Việt Vương</span>
+                  </div>
+                  <h3 class="hero-card-name">Triệu Quang Phục</h3>
+                  <p class="hero-card-desc">
+                    Con trai Triệu Túc, vị tướng trẻ tài ba, sau này kế tục sự nghiệp (Triệu Việt Vương).
+                  </p>
+                  <div class="hero-card-extra">
+                    <span><strong>Dấu ấn:</strong> Được Lý Nam Đế trao binh quyền năm 548, lập căn cứ đầm Dạ Trạch dùng chiến thuật du kích đánh bại tướng Lương Trần Bá Tiên.</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- TAB 3: TRÍCH DẪN CHÍNH SỬ & Ý NGHĨA -->
+            <article
+              id="panel-chinhsu"
+              class="tab-panel"
+              role="tabpanel"
+              aria-labelledby="tab-btn-chinhsu"
+              hidden
+            >
+              <!-- Khung cuộn thư cổ trang trọng -->
+              <div class="ancient-scroll-wrapper">
+                <div class="scroll-roller scroll-roller-top" aria-hidden="true">
+                  <span class="roller-cap left"></span>
+                  <span class="roller-rod"></span>
+                  <span class="roller-cap right"></span>
+                </div>
+
+                <div class="scroll-paper">
+                  <div class="scroll-watermark" aria-hidden="true">萬春</div>
+                  <div class="scroll-header">
+                    <span class="scroll-book-tag">CHÍNH SỬ QUỐC GIA</span>
+                    <h3 class="scroll-source-title">
+                      Trích Đại Việt sử ký toàn thư
+                    </h3>
+                    <span class="scroll-source-vol">(Ngoại kỷ, Quyển IV)</span>
+                  </div>
+
+                  <blockquote class="scroll-quote">
+                    “Mùa xuân, tháng Giêng năm Giáp Tý (544), vua nhân thắng giặc, tự xưng là Nam Việt Đế, lên ngôi, đặt niên hiệu là Thiên Đức, lập trăm quan, dựng quốc hiệu là Vạn Xuân, mong cho xã tắc truyền đến muôn đời...”
+                  </blockquote>
+
+                  <div class="scroll-footer">
+                    <div class="imperial-red-seal" aria-label="Ấn triện Nam Việt Đế">
+                      <span>NAM VIỆT</span>
+                      <span>ĐẾ ẤN</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="scroll-roller scroll-roller-bottom" aria-hidden="true">
+                  <span class="roller-cap left"></span>
+                  <span class="roller-rod"></span>
+                  <span class="roller-cap right"></span>
+                </div>
+              </div>
+
+              <!-- Hộp Ý nghĩa lịch sử -->
+              <div class="meaning-box">
+                <div class="meaning-header">
+                  <span class="meaning-icon" aria-hidden="true">🏛️</span>
+                  <h4 class="meaning-title">Ý nghĩa lịch sử trọng đại</h4>
+                </div>
+                <p class="meaning-main-text">
+                  Khẳng định <strong>chủ quyền độc lập, tự chủ</strong> của người Việt (có <strong>Hoàng đế riêng</strong>, <strong>quốc hiệu riêng</strong>, <strong>niên hiệu riêng</strong>, sánh ngang hàng với phương Bắc), chấm dứt hơn <strong>500 năm Bắc thuộc</strong> kéo dài.
+                </p>
+
+                <div class="meaning-pillars">
+                  <div class="pillar-item">
+                    <strong>1. Xưng Đế (Nam Việt Đế):</strong> Không xưng "Vương" phụ thuộc mà xưng "Đế" bình đẳng tuyệt đối với Hoàng đế phương Bắc.
+                  </div>
+                  <div class="pillar-item">
+                    <strong>2. Quốc hiệu Vạn Xuân:</strong> Gửi gắm khát vọng non sông đất nước trường tồn, tươi đẹp qua vạn mùa xuân.
+                  </div>
+                  <div class="pillar-item">
+                    <strong>3. Niên hiệu Thiên Đức:</strong> Tự chủ ban hành lịch pháp riêng, khẳng định chính quyền hợp lòng trời, thuận lòng dân.
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- TAB 4: DI TÍCH & LỄ HỘI ĐỀN MỤC -->
+            <article
+              id="panel-denmuc"
+              class="tab-panel"
+              role="tabpanel"
+              aria-labelledby="tab-btn-denmuc"
+              hidden
+            >
+              <div class="relic-card">
+                <div class="relic-banner">
+                  <div class="relic-badge-national">DI TÍCH LỊCH SỬ QUỐC GIA</div>
+                  <h3 class="relic-title">Đền Mục – Nơi Thờ Phụng Hoàng Đế Lý Nam Đế</h3>
+                  <p class="relic-location">
+                    📍 Phường Tiên Phong, TP. Phổ Yên, tỉnh Thái Nguyên
+                  </p>
+                </div>
+
+                <div class="relic-body">
+                  <div class="relic-section-grid">
+                    <div class="relic-info-block">
+                      <h4 class="relic-subtitle">🏯 Giới thiệu Di tích Đền Mục</h4>
+                      <p>
+                        <strong>Di tích lịch sử Quốc gia Đền Mục</strong> (thuộc phường Tiên Phong, TP. Phổ Yên, tỉnh Thái Nguyên) là nơi thờ phụng <strong>Hoàng đế Lý Nam Đế</strong> ngay trên chính mảnh đất quê hương ông (vùng Cổ Pháp xưa).
+                      </p>
+                      <p class="relic-p-secondary">
+                        Quần thể di tích được đầu tư tôn tạo uy nghiêm, bề thế với Nghi môn, Đền chính, Lầu chuông, Lầu trống, Nhà bia cùng chùa Hương Ấp cổ kính, trở thành "địa chỉ đỏ" giáo dục truyền thống yêu nước cho các thế hệ học sinh và nhân dân cả nước.
+                      </p>
+                    </div>
+
+                    <div class="relic-info-block">
+                      <h4 class="relic-subtitle">🎎 Lễ hội Đền Mục truyền thống</h4>
+                      <p>
+                        <strong>Lễ hội Đền Mục</strong> được tổ chức trang trọng vào <strong>tháng Giêng âm lịch hằng năm</strong> để tưởng nhớ công lao vị Hoàng đế khai quốc.
+                      </p>
+                      <p class="relic-p-secondary">
+                        Phần lễ diễn ra trang nghiêm với nghi thức rước nước, dâng hương tưởng niệm Đức Vua Lý Nam Đế; phần hội sôi nổi với nhiều hoạt động văn hóa, thể thao và trò chơi dân gian đặc sắc đầu xuân.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Nút nổi bật dẫn tới Google Maps theo đúng yêu cầu -->
+                  <div class="relic-map-cta-box">
+                    <div class="map-cta-info">
+                      <span class="map-pin-pulse" aria-hidden="true">📍</span>
+                      <div>
+                        <strong>Hành trình về nguồn tại Thái Nguyên</strong>
+                        <span>Đền thờ Lý Nam Đế (Đền Mục) – Tiên Phong, TP. Phổ Yên</span>
+                      </div>
+                    </div>
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=%C4%90%E1%BB%81n+M%E1%BB%A5c+Ph%E1%BB%95+Y%C3%AAn+Th%C3%A1i+Nguy%C3%AAn"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn-google-maps"
+                    >
+                      <svg class="map-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                      </svg>
+                      <span>Xem vị trí Đền Mục trên Google Maps</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         PHẦN 3: DÒNG THỜI GIAN TƯƠNG TÁC (TIMELINE)
+         ========================================== -->
+    <section id="dong-thoi-gian" class="section-block timeline-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker">PHẦN II • BIÊN NIÊN SỬ VẠN XUÂN</span>
+          <h2 class="section-title">DÒNG THỜI GIAN TƯƠNG TÁC</h2>
+          <div class="section-ornament" aria-hidden="true">
+            <span></span><i>✦</i><span></span>
+          </div>
+          <p class="section-desc">
+            Chạm vào từng mốc son lịch sử để mở rộng chi tiết chặng đường khởi nghĩa, bảo vệ bờ cõi và dựng nước Vạn Xuân của Hoàng đế Lý Nam Đế.
+          </p>
+          <div class="timeline-controls">
+            <button type="button" id="btn-toggle-all-timeline" class="btn-small-gold">
+              Mở rộng tất cả mốc thời gian
+            </button>
+          </div>
+        </div>
+
+        <div class="timeline-container">
+          <!-- Mốc 1: Năm 541 - 542 -->
+          <div class="timeline-item expanded" data-timeline-index="0">
+            <div class="timeline-marker" aria-hidden="true">
+              <span class="marker-dot"></span>
+            </div>
+            <div class="timeline-card">
+              <button
+                type="button"
+                class="timeline-card-header"
+                aria-expanded="true"
+                aria-controls="tl-body-1"
+              >
+                <div class="tl-header-left">
+                  <span class="tl-year-badge">Năm 541 – 542</span>
+                  <h3 class="tl-summary">
+                    Chiêu binh tụ nghĩa, mùa xuân năm 542 phất cờ khởi nghĩa đánh đuổi Thứ sử Tiêu Tư, chiếm thành Long Biên.
+                  </h3>
+                </div>
+                <span class="tl-chevron" aria-hidden="true">▾</span>
+              </button>
+              <div id="tl-body-1" class="timeline-card-body">
+                <div class="tl-detail-content">
+                  <p>
+                    <strong>Bối cảnh &amp; Diễn biến:</strong> Dưới ách cai trị tàn bạo và sưu cao thuế nặng của Thứ sử Giao Châu là Tiêu Tư (nhà Lương), lòng dân oán hận ngút trời. Lý Bí từ quan về quê chiêu binh mãi mã; hào kiệt khắp nơi như Tinh Thiều, Phạm Tu, Triệu Túc, Triệu Quang Phục đồng lòng tụ nghĩa.
+                  </p>
+                  <p>
+                    <strong>Kết quả:</strong> Mùa xuân năm 542, cờ nghĩa phất cao. Chỉ trong chưa đầy 3 tháng, nghĩa quân chiếm được hầu hết các quận huyện. Tiêu Tư khiếp đảm phải sai người đem vàng bạc đút lót cầu thoát thân rồi bỏ thành Long Biên chạy trốn về Quảng Châu.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mốc 2: Năm 542 - 543 -->
+          <div class="timeline-item" data-timeline-index="1">
+            <div class="timeline-marker" aria-hidden="true">
+              <span class="marker-dot"></span>
+            </div>
+            <div class="timeline-card">
+              <button
+                type="button"
+                class="timeline-card-header"
+                aria-expanded="false"
+                aria-controls="tl-body-2"
+              >
+                <div class="tl-header-left">
+                  <span class="tl-year-badge">Năm 542 – 543</span>
+                  <h3 class="tl-summary">
+                    Đánh tan hai đợt quân xâm lược phản công của nhà Lương (tại Hợp Phố và Đức Châu).
+                  </h3>
+                </div>
+                <span class="tl-chevron" aria-hidden="true">▾</span>
+              </button>
+              <div id="tl-body-2" class="timeline-card-body">
+                <div class="tl-detail-content">
+                  <p>
+                    <strong>Đợt phản công thứ nhất (Cuối năm 542 – đầu năm 543):</strong> Vua Lương sai Tôn Quýnh và Lư Tử Hùng đem quân sang xâm lược. Nghĩa quân Lý Bí chủ động đón đánh ở Hợp Phố, quân Lương đại bại, mười phần chết đến bảy tám phần.
+                  </p>
+                  <p>
+                    <strong>Đợt tấn công từ phía Nam (Tháng 4 năm 543):</strong> Vua Lâm Ấp thừa cơ đem quân đánh phá quận Cửu Đức (Đức Châu). Lý Bí cử lão tướng Phạm Tu thống lĩnh quân đội vào Nam đánh tan quân Lâm Ấp, giữ yên cả hai mặt biên cương Bắc – Nam.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mốc 3: Tháng Giêng năm 544 -->
+          <div class="timeline-item" data-timeline-index="2">
+            <div class="timeline-marker" aria-hidden="true">
+              <span class="marker-dot"></span>
+            </div>
+            <div class="timeline-card">
+              <button
+                type="button"
+                class="timeline-card-header"
+                aria-expanded="false"
+                aria-controls="tl-body-3"
+              >
+                <div class="tl-header-left">
+                  <span class="tl-year-badge highlight-badge">Tháng Giêng năm 544</span>
+                  <h3 class="tl-summary">
+                    Lên ngôi Hoàng đế (Lý Nam Đế), đặt niên hiệu Thiên Đức, dựng nước Vạn Xuân, xây điện Vạn Thọ.
+                  </h3>
+                </div>
+                <span class="tl-chevron" aria-hidden="true">▾</span>
+              </button>
+              <div id="tl-body-3" class="timeline-card-body">
+                <div class="tl-detail-content">
+                  <p>
+                    <strong>Sự kiện trọng đại:</strong> Mùa xuân tháng Giêng năm Giáp Tý (544), Lý Bí chính thức lên ngôi Hoàng đế, tự xưng là <strong>Nam Việt Đế</strong> (Lý Nam Đế), đặt quốc hiệu là <strong>Vạn Xuân</strong>, niên hiệu là <strong>Thiên Đức</strong>.
+                  </p>
+                  <p>
+                    <strong>Xây dựng quốc gia độc lập:</strong> Nhà vua cho dựng điện Vạn Thọ làm nơi triều hội, tổ chức triều đình quy củ với hai ban văn – võ (Tinh Thiều đứng đầu ban văn, Phạm Tu đứng đầu ban võ), đúc tiền riêng và dựng chùa Khai Quốc.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mốc 4: Hôm nay -->
+          <div class="timeline-item" data-timeline-index="3">
+            <div class="timeline-marker" aria-hidden="true">
+              <span class="marker-dot"></span>
+            </div>
+            <div class="timeline-card">
+              <button
+                type="button"
+                class="timeline-card-header"
+                aria-expanded="false"
+                aria-controls="tl-body-4"
+              >
+                <div class="tl-header-left">
+                  <span class="tl-year-badge today-badge">Hôm nay</span>
+                  <h3 class="tl-summary">
+                    Di sản tinh thần bất diệt, được thế hệ trẻ Thái Nguyên tiếp nối và lan tỏa.
+                  </h3>
+                </div>
+                <span class="tl-chevron" aria-hidden="true">▾</span>
+              </button>
+              <div id="tl-body-4" class="timeline-card-body">
+                <div class="tl-detail-content">
+                  <p>
+                    <strong>Tự hào di sản quê hương:</strong> Hơn 1480 năm đã trôi qua, hào khí Vạn Xuân và tên tuổi Hoàng đế Lý Nam Đế vẫn sống mãi trong lòng dân tộc, kết tinh tại Quần thể Di tích lịch sử Quốc gia Đền Mục (TP. Phổ Yên, tỉnh Thái Nguyên).
+                  </p>
+                  <p>
+                    <strong>Sứ mệnh thế hệ trẻ:</strong> Học sinh Đội 3 (12A3, 11A3, 10A3, 11A5) – Trường THPT Bộc Bố ứng dụng công nghệ số xây dựng "Bảo tàng số thu nhỏ", góp phần thực hiện chủ đề: <em>"Tự hào bản sắc – Kết nối di sản – Lan tỏa giá trị văn hóa quê hương"</em>.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         PHẦN 4: MINIGAME TRẮC NGHIỆM & THẺ CHỨNG NHẬN
+         ========================================== -->
+    <section id="minigame" class="section-block quiz-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-kicker">PHẦN III • TƯƠNG TÁC &amp; VINH DANH</span>
+          <h2 class="section-title">MINIGAME TRẮC NGHIỆM &amp; THẺ CHỨNG NHẬN</h2>
+          <div class="section-ornament" aria-hidden="true">
+            <span></span><i>✦</i><span></span>
+          </div>
+          <p class="section-desc">
+            Hoàn thành 5 câu hỏi lịch sử để kiểm tra kiến thức và nhận ngay tấm <strong>"THẺ CHỨNG NHẬN ĐẠI SỨ DI SẢN VẠN XUÂN"</strong> mang tên riêng của bạn!
+          </p>
+        </div>
+
+        <!-- Khung trạng thái điểm số trực tiếp -->
+        <div class="quiz-scoreboard">
+          <div class="score-stat">
+            <span class="score-label">Tiến độ</span>
+            <span class="score-value" id="quiz-progress-text">0 / 5 câu</span>
+          </div>
+          <div class="score-progress-bar-wrap" aria-hidden="true">
+            <div class="score-progress-fill" id="quiz-progress-bar" style="width: 0%"></div>
+          </div>
+          <div class="score-stat score-right">
+            <span class="score-label">Điểm trực tiếp</span>
+            <span class="score-value gold-text" id="quiz-score-text">0 / 100</span>
+          </div>
+        </div>
+
+        <!-- Danh sách 5 nút chuyển câu hỏi nhanh -->
+        <div class="question-pills" id="question-pills" role="tablist" aria-label="Danh sách 5 câu hỏi">
+          <!-- Render động từ JS -->
+        </div>
+
+        <!-- Hộp hiển thị câu hỏi hiện tại -->
+        <div class="quiz-card" id="quiz-active-card">
+          <div class="quiz-q-header">
+            <span class="quiz-q-number" id="quiz-q-number">CÂU HỎI 1 / 5</span>
+            <span class="quiz-q-points">+20 điểm</span>
+          </div>
+
+          <h3 class="quiz-q-title" id="quiz-q-title">
+            Đang tải câu hỏi...
+          </h3>
+
+          <div class="quiz-options-list" id="quiz-options-list">
+            <!-- Các đáp án A, B, C, D sẽ được render bởi JS -->
+          </div>
+
+          <!-- Hộp giải thích sau mỗi câu -->
+          <div class="quiz-explanation-box" id="quiz-explanation-box" hidden>
+            <div class="exp-status" id="quiz-exp-status"></div>
+            <p class="exp-text" id="quiz-exp-text"></p>
+          </div>
+
+          <!-- Điều hướng câu hỏi -->
+          <div class="quiz-nav-footer">
+            <button type="button" id="btn-prev-q" class="btn-quiz-nav" disabled>
+              ← Câu trước
+            </button>
+            <button type="button" id="btn-reset-quiz" class="btn-quiz-reset">
+              Làm lại từ đầu
+            </button>
+            <button type="button" id="btn-next-q" class="btn-quiz-nav btn-quiz-next">
+              Câu tiếp →
+            </button>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             KHU VỰC NHẬN THẺ CHỨNG NHẬN ĐẠI SỨ DI SẢN
+             ========================================== -->
+        <div class="certificate-zone" id="certificate-zone">
+          <div class="cert-form-card">
+            <div class="cert-unlock-banner" id="cert-unlock-banner">
+              <span class="trophy-icon" aria-hidden="true">🏆</span>
+              <div>
+                <h3 class="cert-form-title" id="cert-status-heading">
+                  Cấp Thẻ Chứng Nhận Đại Sứ Di Sản Vạn Xuân
+                </h3>
+                <p class="cert-form-sub" id="cert-status-sub">
+                  Nhập họ tên của bạn để khắc lên Thẻ Chứng Nhận. Hoàn thành đủ 5 câu trắc nghiệm để mở khóa pháo hoa vinh danh!
+                </p>
+              </div>
+            </div>
+
+            <div class="cert-inputs-grid">
+              <div class="input-group">
+                <label for="player-name-input">Họ và tên Đại sứ di sản:</label>
+                <input
+                  type="text"
+                  id="player-name-input"
+                  placeholder="Ví dụ: Nguyễn Minh Anh..."
+                  maxlength="36"
+                  autocomplete="name"
+                />
+              </div>
+              <div class="input-group">
+                <label for="player-class-input">Lớp / Đơn vị (Tùy chọn):</label>
+                <input
+                  type="text"
+                  id="player-class-input"
+                  placeholder="Ví dụ: Lớp 12A3 – Trường THPT Bộc Bố"
+                  value="Đội 3 – Trường THPT Bộc Bố"
+                  maxlength="45"
+                />
+              </div>
+            </div>
+
+            <!-- Nút chọn nhanh các chi đoàn Đội 3 -->
+            <div class="quick-class-chips">
+              <span class="chip-prompt">Chọn nhanh chi đoàn Đội 3:</span>
+              <button type="button" class="class-chip" data-class="Chi đoàn 12A3 – THPT Bộc Bố">12A3</button>
+              <button type="button" class="class-chip" data-class="Chi đoàn 11A3 – THPT Bộc Bố">11A3</button>
+              <button type="button" class="class-chip" data-class="Chi đoàn 10A3 – THPT Bộc Bố">10A3</button>
+              <button type="button" class="class-chip" data-class="Chi đoàn 11A5 – THPT Bộc Bố">11A5</button>
+            </div>
+          </div>
+
+          <!-- BẢN XEM TRƯỚC THẺ CHỨNG NHẬN & CANVAS TẢI ẢNH -->
+          <div class="certificate-preview-wrapper">
+            <div class="certificate-card" id="certificate-dom-card">
+              <div class="cert-corner cert-tl" aria-hidden="true"></div>
+              <div class="cert-corner cert-tr" aria-hidden="true"></div>
+              <div class="cert-corner cert-bl" aria-hidden="true"></div>
+              <div class="cert-corner cert-br" aria-hidden="true"></div>
+
+              <div class="cert-inner">
+                <div class="cert-top-emblem">
+                  <span class="cert-school-name">TRƯỜNG THPT BỘC BỐ • ĐỘI 3 (12A3, 11A3, 10A3, 11A5)</span>
+                  <div class="cert-seal-row">
+                    <span class="cert-line"></span>
+                    <span class="cert-medallion">萬春</span>
+                    <span class="cert-line"></span>
+                  </div>
+                </div>
+
+                <h3 class="cert-main-title">THẺ CHỨNG NHẬN</h3>
+                <p class="cert-role-title">ĐẠI SỨ DI SẢN VẠN XUÂN</p>
+
+                <p class="cert-grant-label">Trân trọng trao tặng cho:</p>
+                <div class="cert-recipient-name" id="cert-display-name">
+                  Người Yêu Sử Việt
+                </div>
+                <div class="cert-recipient-class" id="cert-display-class">
+                  Đội 3 – Trường THPT Bộc Bố
+                </div>
+
+                <div class="cert-score-badge">
+                  <div class="cert-score-pill">
+                    <span>Kết quả Minigame:</span>
+                    <strong id="cert-display-score">5/5 câu (100 điểm)</strong>
+                  </div>
+                  <div class="cert-rank-pill" id="cert-display-rank">
+                    Danh hiệu: Đại Sứ Di Sản Xuất Sắc
+                  </div>
+                </div>
+
+                <p class="cert-quote">
+                  “Tự hào bản sắc – Kết nối di sản – Lan tỏa giá trị văn hóa quê hương”
+                </p>
+
+                <div class="cert-bottom-row">
+                  <div class="cert-meta-col">
+                    <span class="cert-meta-label">Mã thẻ bảo tàng</span>
+                    <strong class="cert-meta-val" id="cert-display-code">#VX-2026-544</strong>
+                  </div>
+                  <div class="cert-stamp-box" aria-hidden="true">
+                    <div class="red-stamp">
+                      <span>HÀO KHÍ</span>
+                      <span>VẠN XUÂN</span>
+                    </div>
+                  </div>
+                  <div class="cert-meta-col">
+                    <span class="cert-meta-label">Năm phát hành</span>
+                    <strong class="cert-meta-val">Xuân 2026</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Canvas ẩn độ phân giải cao dùng để xuất file PNG sắc nét -->
+            <canvas id="certificate-canvas" width="1080" height="1440" hidden></canvas>
+
+            <!-- Cụm nút Lưu ảnh / Chụp màn hình -->
+            <div class="cert-actions-bar">
+              <button type="button" id="btn-download-cert" class="btn-primary-gold btn-full-mobile">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Lưu ảnh Thẻ Chứng Nhận (.PNG)</span>
+              </button>
+
+              <button type="button" id="btn-fullscreen-cert" class="btn-secondary-dark btn-full-mobile">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                </svg>
+                <span>Mở toàn màn hình để chụp ảnh</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================
+       PHẦN 5: FOOTER & NGUỒN TƯ LIỆU THAM KHẢO
+       ========================================== -->
+  <footer id="footer" class="site-footer">
+    <div class="traditional-border-top" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Cột 1: Nguồn tư liệu tham khảo chính thống -->
+        <div class="footer-col">
+          <h3 class="footer-heading">📚 NGUỒN TƯ LIỆU THAM KHẢO</h3>
+          <ul class="sources-list">
+            <li>
+              <span class="source-bullet">1</span>
+              <span><strong>Đại Việt sử ký toàn thư</strong> (Ngô Sĩ Liên).</span>
+            </li>
+            <li>
+              <span class="source-bullet">2</span>
+              <span><strong>Việt Nam sử lược</strong> (Trần Trọng Kim).</span>
+            </li>
+            <li>
+              <span class="source-bullet">3</span>
+              <span><strong>SGK Lịch sử &amp; Địa lí 6</strong> (Bộ Giáo dục và Đào tạo).</span>
+            </li>
+            <li>
+              <span class="source-bullet">4</span>
+              <span><strong>Tài liệu Giáo dục địa phương tỉnh Thái Nguyên</strong>.</span>
+            </li>
+            <li>
+              <span class="source-bullet">5</span>
+              <span><strong>Cổng thông tin điện tử tỉnh Thái Nguyên</strong>.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Cột 2: Thông tin Đội thi & Bản quyền -->
+        <div class="footer-col footer-about-col">
+          <h3 class="footer-heading">🏛️ VỀ BẢO TÀNG SỐ THU NHỎ</h3>
+          <div class="footer-project-card">
+            <p class="footer-theme-quote">
+              “Tự hào bản sắc – Kết nối di sản – Lan tỏa giá trị văn hóa quê hương”
+            </p>
+            <p class="footer-team-info">
+              Sản phẩm dự thi Cuộc thi tìm hiểu văn hóa dân tộc và di sản địa phương năm 2026.
+            </p>
+            <div class="footer-classes-tags">
+              <span>Chi đoàn 12A3</span>
+              <span>Chi đoàn 11A3</span>
+              <span>Chi đoàn 10A3</span>
+              <span>Chi đoàn 11A5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="copyright-text">
+          © Bản quyền: <strong>Đội 3 – Trường THPT Bộc Bố (2026)</strong>. Thiết kế tối ưu Mobile-First phục vụ tra cứu qua mã QR.
+        </p>
+        <a href="#hero" class="back-to-top-link">Lên đầu trang ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL HIỂN THỊ MÃ QR CHIA SẺ & CHẾ ĐỘ CHỤP MÀN HÌNH -->
+  <div class="modal-overlay" id="qr-modal" hidden aria-modal="true" role="dialog" aria-labelledby="qr-modal-title">
+    <div class="modal-box">
+      <button type="button" class="modal-close-btn" id="btn-close-qr" aria-label="Đóng cửa sổ">✕</button>
+      <span class="modal-kicker">QUÉT MÃ TRÊN ĐIỆN THOẠI</span>
+      <h3 class="modal-title" id="qr-modal-title">Bảo Tàng Số Hào Khí Vạn Xuân</h3>
+      <p class="modal-desc">
+        Dùng camera điện thoại hoặc Zalo để quét mã QR truy cập không gian Bảo tàng số Hoàng đế Lý Nam Đế &amp; Di tích Đền Mục.
+      </p>
+      <div class="qr-visual-frame">
+        <canvas id="qr-code-canvas" width="220" height="220"></canvas>
+      </div>
+      <div class="modal-team-tag">
+        Đội 3 (12A3, 11A3, 10A3, 11A5) – Trường THPT Bộc Bố
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CHẾ ĐỘ XEM TOÀN MÀN HÌNH ĐỂ CHỤP ẢNH THẺ CHỨNG NHẬN -->
+  <div class="modal-overlay" id="cert-fullscreen-modal" hidden aria-modal="true" role="dialog" aria-label="Chế độ chụp màn hình Thẻ Chứng Nhận">
+    <div class="cert-fullscreen-container">
+      <div class="cert-fs-hint">
+        <span>📸 Hãy bấm phím chụp màn hình điện thoại hoặc lưu ảnh bên dưới</span>
+        <button type="button" id="btn-close-fs-cert" class="btn-fs-close">Đóng ✕</button>
+      </div>
+      <div class="cert-fs-image-wrap">
+        <img id="cert-fs-img" alt="Thẻ Chứng Nhận Đại Sứ Di Sản Vạn Xuân" />
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
